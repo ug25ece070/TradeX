@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PulseStock — Sign In</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04060f;--bg2:#080c1a;
+  --surf:rgba(255,255,255,.042);--surf2:rgba(255,255,255,.075);
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.13);
+  --txt:#eef2ff;--txt2:#7b85a8;--txt3:#424b6b;
+  --acc:#4f8bff;--acc2:#7b5ea7;--grn:#20d4a0;--red:#ff4a6a;--gld:#f5c840;
+  --r:16px;--rs:10px;--tr:0.26s cubic-bezier(.4,0,.2,1);
+}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:14px;
+  overflow:hidden;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+#nav{
+  position:relative;
+  z-index:999;
+  background:rgba(4,6,15,.9);
+  border-bottom:1px solid var(--bdr);
+  backdrop-filter:blur(20px);
+  padding:0 24px;
+}
+.nav-in{
+  max-width:1160px;margin:0 auto;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  display:flex;align-items:center;gap:9px;
+  font-weight:800;font-size:17px;cursor:pointer;letter-spacing:-.3px;
+  text-decoration:none;color:var(--txt);
+}
+.logo-icon{
+  width:30px;height:30px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+
+/* ── BG ORBS ─────────────────────────────────────────────── */
+.hero-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.13}
+.o1{width:500px;height:500px;background:radial-gradient(circle,#4f8bff,transparent);top:-160px;left:-100px;animation:da 15s ease-in-out infinite alternate}
+.o2{width:400px;height:400px;background:radial-gradient(circle,#7b5ea7,transparent);bottom:-100px;right:-60px;animation:db 19s ease-in-out infinite alternate}
+.o3{width:260px;height:260px;background:radial-gradient(circle,#20d4a0,transparent);top:40%;left:58%;animation:dc 11s ease-in-out infinite alternate}
+@keyframes da{to{transform:translate(40px,25px)}}
+@keyframes db{to{transform:translate(-25px,-45px)}}
+@keyframes dc{to{transform:translate(-50px,18px)}}
+.grid-bg{
+  position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:50px 50px;
+}
+
+/* ── MAIN ────────────────────────────────────────────────── */
+.main{
+  position:relative;z-index:2;
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  padding:32px 24px;
+}
+
+/* ── LOGIN CARD ──────────────────────────────────────────── */
+.card{
+  width:100%;max-width:420px;
+  background:rgba(8,12,26,.85);
+  border:1px solid var(--bdr2);
+  border-radius:var(--r);
+  padding:38px 36px 32px;
+  backdrop-filter:blur(24px);
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);
+  animation:fu .6s ease both;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(79,139,255,.04),transparent 60%,rgba(123,94,167,.04));
+  pointer-events:none;
+}
+@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* top glow line */
+.card::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,139,255,.4),rgba(123,94,167,.35),transparent);
+}
+
+/* ── CARD HEADER ─────────────────────────────────────────── */
+.card-header{text-align:center;margin-bottom:28px}
+.card-logo{
+  display:inline-flex;align-items:center;gap:9px;
+  font-weight:800;font-size:20px;letter-spacing:-.3px;margin-bottom:16px;
+}
+.card-logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--acc);
+  background:rgba(79,139,255,.1);
+  border:1px solid rgba(79,139,255,.2);
+  padding:4px 12px;border-radius:100px;margin-bottom:14px;
+}
+.card-title{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:5px}
+.card-sub{font-size:13px;color:var(--txt2);font-weight:400}
+
+/* ── FORM ────────────────────────────────────────────────── */
+.form-group{margin-bottom:16px}
+.form-label{
+  display:block;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--txt3);margin-bottom:8px;
+}
+.input-wrap{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.042);
+  border:1.5px solid var(--bdr2);
+  border-radius:10px;
+  padding:0 14px;
+  transition:var(--tr);
+}
+.input-wrap:focus-within{
+  border-color:var(--acc);
+  box-shadow:0 0 0 3px rgba(79,139,255,.12);
+  background:rgba(79,139,255,.04);
+}
+.input-ico{color:var(--txt3);font-size:15px;flex-shrink:0;user-select:none}
+.input-wrap input{
+  flex:1;background:none;border:none;outline:none;
+  font-size:14px;color:var(--txt);
+  font-family:inherit;
+  padding:13px 0;
+}
+.input-wrap input::placeholder{color:var(--txt3)}
+.eye-btn{
+  background:none;border:none;cursor:pointer;
+  color:var(--txt3);font-size:15px;padding:0;
+  transition:color var(--tr);
+  user-select:none;
+}
+.eye-btn:hover{color:var(--txt2)}
+
+/* ── DIVIDER / EXTRAS ────────────────────────────────────── */
+.row{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;margin-top:4px}
+.remember{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none}
+.remember input[type=checkbox]{
+  appearance:none;width:15px;height:15px;border:1.5px solid var(--bdr2);border-radius:4px;
+  background:var(--surf);cursor:pointer;transition:var(--tr);position:relative;flex-shrink:0;
+}
+.remember input[type=checkbox]:checked{background:var(--acc);border-color:var(--acc)}
+.remember input[type=checkbox]:checked::after{
+  content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:10px;font-weight:700;
+}
+.remember span{font-size:12px;color:var(--txt2)}
+.forgot{font-size:12px;color:var(--acc);cursor:pointer;text-decoration:none;transition:opacity var(--tr)}
+.forgot:hover{opacity:.75}
+
+/* ── SUBMIT BTN ──────────────────────────────────────────── */
+.submit-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:#fff;
+  font-size:14px;font-weight:700;
+  padding:13px;
+  border-radius:10px;
+  border:none;cursor:pointer;
+  font-family:inherit;
+  letter-spacing:.01em;
+  transition:var(--tr);
+  position:relative;overflow:hidden;
+  margin-bottom:20px;
+}
+.submit-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);
+  pointer-events:none;
+}
+.submit-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 28px rgba(79,139,255,.38);
+}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── SPINNER ─────────────────────────────────────────────── */
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin .7s linear infinite;vertical-align:middle;margin-right:7px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.card-footer{text-align:center}
+.card-footer p{font-size:12px;color:var(--txt3)}
+.card-footer .stats{
+  display:flex;justify-content:center;gap:20px;
+  margin-top:18px;padding-top:18px;
+  border-top:1px solid var(--bdr);
+}
+.stat{text-align:center}
+.stat-val{font-size:14px;font-weight:800;color:var(--txt);margin-bottom:2px}
+.stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3)}
+
+/* ── ERROR ───────────────────────────────────────────────── */
+.err-msg{
+  font-size:12px;color:var(--red);
+  background:rgba(255,74,106,.08);
+  border:1px solid rgba(255,74,106,.18);
+  border-radius:8px;
+  padding:10px 14px;
+  margin-bottom:14px;
+  display:none;
+}
+.err-msg.show{display:block;animation:fu .3s ease}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div id="nav">
+  <div class="nav-in">
+    <a class="logo" href="#">
+      <div class="logo-icon">PS</div>
+      PulseStock
+    </a>
+  </div>
+</div>
+
+<!-- BG -->
+<div class="hero-bg">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+</div>
+<div class="grid-bg"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="card">
+
+    <div class="card-header">
+      <div class="card-logo">
+        <div class="card-logo-icon">PS</div>
+        PulseStock
+      </div>
+      <div class="badge">Secure Login</div>
+      <div class="card-sub">Sign in to your Indian Market AI Analyzer</div>
+    </div>
+
+    <div class="err-msg" id="errMsg">Please enter your email and password.</div>
+
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <div class="input-wrap">
+        <span class="input-ico">@</span>
+        <input type="email" id="emailIn" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <div class="input-wrap">
+        <span class="input-ico">•••</span>
+        <input type="password" id="passIn" placeholder="Enter your password" autocomplete="current-password"/>
+        <button class="eye-btn" id="eyeBtn" type="button" onclick="toggleEye()">show</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="remember">
+        <input type="checkbox" id="remChk"/>
+        <span>Remember me</span>
+      </label>
+      <a href="#" class="forgot">Forgot password?</a>
+    </div>
+
+    <button class="submit-btn" id="loginBtn" onclick="doLogin()">
+      Sign In to PulseStock
+    </button>
+
+    <div class="card-footer">
+      <p>Market data powered by NSE · India · AI analysis via Gemini</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-val">₹6.8T</div><div class="stat-lbl">Market Cap</div></div>
+        <div class="stat"><div class="stat-val">4,000+</div><div class="stat-lbl">Stocks</div></div>
+        <div class="stat"><div class="stat-val">AI ✓</div><div class="stat-lbl">Powered</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleEye() {
+  const inp = document.getElementById('passIn');
+  const btn = document.getElementById('eyeBtn');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.textContent = 'hide';
+  } else {
+    inp.type = 'password';
+    btn.textContent = 'show';
+  }
+}
+
+function doLogin() {
+  const email = document.getElementById('emailIn').value.trim();
+  const pass  = document.getElementById('passIn').value.trim();
+  const err   = document.getElementById('errMsg');
+  const btn   = document.getElementById('loginBtn');
+
+  if (!email || !pass) {
+    err.textContent = 'Please enter your email and password.';
+    err.classList.add('show');
+    return;
+  }
+
+  // Basic email format check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    err.textContent = 'Please enter a valid email address.';
+    err.classList.add('show');
+    return;
+  }
+
+  // Check credentials
+  if (email !== 'dummy@gmail.com' || pass !== '12345') {
+    err.textContent = 'Invalid email or password. Please try again.';
+    err.classList.add('show');
+    return;
+  }
+
+  err.classList.remove('show');
+
+  // Show loading state
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Signing in…';
+
+  // Simulate auth delay then redirect
+  setTimeout(() => {
+    window.location.href = 'http://localhost:3001/';
+  }, 1200);
+}
+
+// Allow Enter key on inputs
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>
